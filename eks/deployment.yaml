@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: python-app
+  namespace: lab
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: python-app
+
+  template:
+    metadata:
+      labels:
+        app: python-app
+
+    spec:
+      serviceAccountName: app-sa
+
+      containers:
+        - name: python-app
+          image: 150390106962.dkr.ecr.eu-west-2.amazonaws.com/python:v6
+
+          ports:
+            - containerPort: 8080
+
+          env:
+            - name: SECRET_NAME
+              value: db-creds
+
+            - name: AWS_REGION
+              value: eu-west-2
+
+            - name: TABLE_NAME
+              value: employees
+
+            - name: LOG_BUCKET
+              value: api-logs-bucket-01     
+
+            - name: LOG_PREFIX
+              value: app-logs              
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+
+            limits:
+              cpu: 500m
+              memory: 256Mi
