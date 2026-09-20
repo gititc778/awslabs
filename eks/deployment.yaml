@@ -3,7 +3,7 @@ kind: Deployment
 
 metadata:
   name: python-app
-  namespace: lab
+  namespace: dev
 
 spec:
   replicas: 1

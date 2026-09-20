@@ -3,7 +3,7 @@ kind: Service
 
 metadata:
   name: python-app
-  namespace: lab
+  namespace: dev
 
 spec:
   selector:
