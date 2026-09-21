@@ -11,7 +11,7 @@ from flask import Flask, request, jsonify
 SECRET_NAME = os.environ.get("SECRET_NAME", "db-creds")
 REGION      = os.environ.get("AWS_REGION", "eu-west-2")
 TABLE       = os.environ.get("TABLE_NAME", "employees")
-LOG_BUCKET  = os.environ.get("LOG_BUCKET")           # e.g. my-eks-lab-logs
+LOG_BUCKET  = os.environ.get("LOG_BUCKET")        
 LOG_PREFIX  = os.environ.get("LOG_PREFIX", "app-logs")
 POD         = os.environ.get("HOSTNAME", "unknown-pod")
 

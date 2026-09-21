@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Directory</title>
+  <style>
+    :root {
+      --bg1: #6366f1;
+      --bg2: #8b5cf6;
+      --bg3: #ec4899;
+      --card: rgba(255, 255, 255, 0.95);
+      --ink: #1e293b;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --ok: #10b981;
+      --err: #ef4444;
+      --shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2) 55%, var(--bg3));
+      color: var(--ink);
+      padding: 32px 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .wrap { width: 100%; max-width: 900px; }
+
+    header {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 28px;
+    }
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    }
+    header p { opacity: 0.9; margin-top: 6px; font-size: 0.95rem; }
+
+    .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 720px) {
+      .grid { grid-template-columns: 340px 1fr; align-items: start; }
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      backdrop-filter: blur(6px);
+    }
+
+    .card h2 {
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+
+    label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--muted); margin: 12px 0 6px; }
+    input {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: transform 0.08s, background 0.15s, box-shadow 0.15s;
+    }
+    button:active { transform: translateY(1px); }
+
+    .btn-primary {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--bg2));
+      box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+    }
+    .btn-primary:hover { background: linear-gradient(135deg, var(--accent-hover), #7c3aed); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .list-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .btn-ghost {
+      padding: 8px 14px;
+      background: #f1f5f9;
+      color: var(--accent);
+    }
+    .btn-ghost:hover { background: #e2e8f0; }
+
+    .count-pill {
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+      margin-left: 8px;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--line);
+    }
+    td { padding: 12px; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+    tbody tr { transition: background 0.12s; }
+    tbody tr:hover { background: #f8fafc; }
+
+    .id-badge {
+      display: inline-block;
+      min-width: 28px;
+      text-align: center;
+      background: #eef2ff;
+      color: var(--accent);
+      font-weight: 700;
+      border-radius: 8px;
+      padding: 3px 8px;
+      font-size: 0.85rem;
+    }
+    .dept-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      background: #fce7f3;
+      color: #be185d;
+    }
+
+    .empty, .loading {
+      text-align: center;
+      color: var(--muted);
+      padding: 40px 12px;
+      font-size: 0.9rem;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      background: var(--ink);
+      color: #fff;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      z-index: 100;
+      max-width: 90vw;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.ok { background: var(--ok); }
+    .toast.err { background: var(--err); }
+
+    footer { text-align: center; color: rgba(255,255,255,0.75); font-size: 0.78rem; margin-top: 24px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>👥 Employee Directory</h1>
+      <p>Add and browse employees — running on Amazon EKS</p>
+    </header>
+
+    <div class="grid">
+      <!-- Add form -->
+      <div class="card">
+        <h2><span class="dot"></span> Add Employee</h2>
+        <form id="addForm">
+          <label for="empId">ID</label>
+          <input id="empId" type="number" placeholder="e.g. 101" required />
+
+          <label for="empName">Name</label>
+          <input id="empName" type="text" placeholder="e.g. Ada Lovelace" required />
+
+          <label for="empDept">Department</label>
+          <input id="empDept" type="text" placeholder="e.g. Engineering" required />
+
+          <button type="submit" class="btn-primary" id="submitBtn">Add Employee</button>
+        </form>
+      </div>
+
+      <!-- List -->
+      <div class="card">
+        <div class="list-head">
+          <h2 style="margin:0"><span class="dot"></span> Employees <span class="count-pill" id="count">0</span></h2>
+          <button class="btn-ghost" id="refreshBtn">↻ Refresh</button>
+        </div>
+        <div id="tableWrap">
+          <div class="loading">Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>Backend: Flask + MySQL · Served via nginx · Exposed by AWS Load Balancer Controller</footer>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // All API calls go through the same origin under /api,
+    // which nginx reverse-proxies to the python-app service.
+    const API = "/api";
+
+    const $ = (id) => document.getElementById(id);
+    const toast = (msg, type = "") => {
+      const t = $("toast");
+      t.textContent = msg;
+      t.className = "toast show " + type;
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => (t.className = "toast " + type), 3000);
+    };
+
+    async function loadEmployees() {
+      const wrap = $("tableWrap");
+      wrap.innerHTML = '<div class="loading">Loading…</div>';
+      try {
+        const res = await fetch(`${API}/employees`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const rows = await res.json();
+        $("count").textContent = rows.length;
+
+        if (!rows.length) {
+          wrap.innerHTML = '<div class="empty">No employees yet — add the first one! 🎉</div>';
+          return;
+        }
+
+        const body = rows
+          .map(
+            (r) => `
+          <tr>
+            <td><span class="id-badge">${r.id}</span></td>
+            <td>${escapeHtml(r.name)}</td>
+            <td><span class="dept-tag">${escapeHtml(r.department)}</span></td>
+          </tr>`
+          )
+          .join("");
+
+        wrap.innerHTML = `
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Department</th></tr>
+            </thead>
+            <tbody>${body}</tbody>
+          </table>`;
+      } catch (e) {
+        wrap.innerHTML = '<div class="empty">Could not load employees.</div>';
+        toast("Failed to load: " + e.message, "err");
+      }
+    }
+
+    async function addEmployee(evt) {
+      evt.preventDefault();
+      const btn = $("submitBtn");
+      const payload = {
+        id: Number($("empId").value),
+        name: $("empName").value.trim(),
+        department: $("empDept").value.trim(),
+      };
+
+      btn.disabled = true;
+      btn.textContent = "Adding…";
+      try {
+        const res = await fetch(`${API}/employees`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json();
+        if (res.status === 201) {
+          toast(`Added ${payload.name} ✓`, "ok");
+          $("addForm").reset();
+          loadEmployees();
+        } else {
+          toast(data.error || `Error ${res.status}`, "err");
+        }
+      } catch (e) {
+        toast("Request failed: " + e.message, "err");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Add Employee";
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, (c) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+      }[c]));
+    }
+
+    $("addForm").addEventListener("submit", addEmployee);
+    $("refreshBtn").addEventListener("click", loadEmployees);
+    loadEmployees();
+  </script>
+</body>
+</html>
