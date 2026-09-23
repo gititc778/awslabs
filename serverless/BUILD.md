@@ -1,5 +1,7 @@
 # ShopWave — Serverless E-Commerce on AWS
 
+![ShopWave architecture](docs/architecture.png)
+
 **Complete Build Guide (Steps 1–12)** · Region: `eu-west-2` (London)
 
 A step-by-step runbook to build the full serverless application from scratch. Each
@@ -693,4 +695,4 @@ Browser → ALB → ECS (Flask) → API Gateway → Lambda → RDS / SQS / S3
 
 ---
 
-*End of build guide — all 7 steps complete.*
+*End of build guide — all 12 steps complete (backend + frontend).*
