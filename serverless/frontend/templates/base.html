@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{{ store_name }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-mark">◈</span> {{ store_name }}
+      </a>
+      <nav class="nav-links">
+        <a href="{{ url_for('index') }}">Shop</a>
+        <a href="{{ url_for('order_lookup') }}">Track order</a>
+      </nav>
+      <a class="cart-btn" href="{{ url_for('cart') }}" aria-label="Cart">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-count" data-cart-count>0</span>
+      </a>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-wrap">
+        {% for category, msg in messages %}
+          <div class="flash flash-{{ category }}">{{ msg }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main class="page">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <span class="brand-mark">◈</span> {{ store_name }}
+        <p class="muted">A serverless demo storefront — ECS · API Gateway · Lambda · SQS · RDS · S3</p>
+      </div>
+      <div class="muted small">© 2026 {{ store_name }}. Built for the AWS serverless workshop.</div>
+    </div>
+  </footer>
+
+  <div class="toast" data-toast hidden></div>
+  <script src="{{ url_for('static', filename='js/cart.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

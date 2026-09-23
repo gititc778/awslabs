@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Not found — {{ store_name }}{% endblock %}
+{% block content %}
+<div class="empty-state">
+  <div class="empty-glyph">🤷</div>
+  <h2>404 — we couldn't find that page</h2>
+  <p class="muted">The link may be broken or the product no longer exists.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">Back to shop</a>
+</div>
+{% endblock %}

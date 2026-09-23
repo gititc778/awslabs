@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — {{ store_name }}{% endblock %}
+
+{% block content %}
+<nav class="crumbs"><a href="{{ url_for('index') }}">Shop</a> / <span>{{ product.name }}</span></nav>
+
+<section class="detail">
+  <div class="detail-media thumb-{{ product.image }}">
+    <span class="thumb-glyph-lg">{{ product.category[0] }}</span>
+  </div>
+  <div class="detail-info">
+    <span class="product-cat">{{ product.category }}</span>
+    <h1>{{ product.name }}</h1>
+    {% if product.rating is defined %}
+      <div class="rating">★ {{ '%.1f'|format(product.rating) }} <span class="muted small">· in stock: {{ product.stock }}</span></div>
+    {% endif %}
+    <p class="detail-desc">{{ product.description }}</p>
+    <div class="detail-price">£{{ '%.2f'|format(product.price) }}</div>
+    <div class="detail-actions">
+      <div class="qty" data-qty>
+        <button type="button" data-qty-dec>−</button>
+        <input type="number" value="1" min="1" data-qty-input />
+        <button type="button" data-qty-inc>+</button>
+      </div>
+      <button class="btn btn-primary btn-lg"
+              data-add-to-cart
+              data-id="{{ product.id }}"
+              data-name="{{ product.name }}"
+              data-price="{{ product.price }}"
+              data-qty-source>Add to cart</button>
+    </div>
+    <ul class="perks">
+      <li>✓ Free shipping over £75</li>
+      <li>✓ 30-day returns</li>
+      <li>✓ 2-year warranty</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}

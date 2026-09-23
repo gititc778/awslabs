@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Checkout — {{ store_name }}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Checkout</h1>
+
+<form class="checkout-layout" id="checkout-form">
+  <div class="checkout-fields">
+    <h2>Shipping details</h2>
+    <div class="field">
+      <label for="name">Full name</label>
+      <input type="text" id="name" name="name" required autocomplete="name" />
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email" />
+    </div>
+    <div class="field">
+      <label for="address">Delivery address</label>
+      <textarea id="address" name="address" rows="3" required autocomplete="street-address"></textarea>
+    </div>
+
+    <h2>Payment</h2>
+    <p class="muted small">This is a demo — no real payment is taken.</p>
+    <div class="field">
+      <label for="card">Card number</label>
+      <input type="text" id="card" name="card" inputmode="numeric" placeholder="4242 4242 4242 4242" />
+    </div>
+  </div>
+
+  <aside class="cart-summary">
+    <h2>Order summary</h2>
+    <div class="checkout-lines" data-checkout-lines></div>
+    <div class="summary-row"><span>Subtotal</span><span data-summary-subtotal>£0.00</span></div>
+    <div class="summary-row"><span>Shipping</span><span data-summary-shipping>£0.00</span></div>
+    <div class="summary-row summary-total"><span>Total</span><span data-summary-total>£0.00</span></div>
+    <button type="submit" class="btn btn-primary btn-lg btn-block" data-place-order>Place order</button>
+    <p class="checkout-error" data-checkout-error hidden></p>
+  </aside>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  window.CHECKOUT_URL = "{{ url_for('place_order') }}";
+</script>
+<script src="{{ url_for('static', filename='js/checkout.js') }}"></script>
+{% endblock %}

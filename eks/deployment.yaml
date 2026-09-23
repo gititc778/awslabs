@@ -22,14 +22,14 @@ spec:
 
       containers:
         - name: python-app
-          image: 150390106962.dkr.ecr.eu-west-2.amazonaws.com/python:v1
+          image: 150390106962.dkr.ecr.eu-west-2.amazonaws.com/pythonapp:v1
 
           ports:
             - containerPort: 8080
 
           env:
             - name: SECRET_NAME
-              value: db-creds2
+              value: dev-euw2-secrets
 
             - name: AWS_REGION
               value: eu-west-2

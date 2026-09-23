@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Your cart — {{ store_name }}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Your cart</h1>
+
+<div class="cart-layout">
+  <div class="cart-items" data-cart-items>
+    <!-- rendered by cart.js -->
+  </div>
+
+  <aside class="cart-summary" data-cart-summary hidden>
+    <h2>Summary</h2>
+    <div class="summary-row"><span>Subtotal</span><span data-summary-subtotal>£0.00</span></div>
+    <div class="summary-row"><span>Shipping</span><span data-summary-shipping>£0.00</span></div>
+    <div class="summary-row summary-total"><span>Total</span><span data-summary-total>£0.00</span></div>
+    <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-lg btn-block">Checkout</a>
+    <button class="btn btn-ghost btn-block" data-clear-cart>Clear cart</button>
+  </aside>
+</div>
+
+<div class="empty-state" data-cart-empty hidden>
+  <div class="empty-glyph">🛒</div>
+  <h2>Your cart is empty</h2>
+  <p class="muted">Browse the catalog and add something you like.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary">Start shopping</a>
+</div>
+{% endblock %}

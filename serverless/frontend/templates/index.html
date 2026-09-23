@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}{{ store_name }} — Modern tech, delivered{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">New season · Free shipping over £75</p>
+    <h1>Gear that keeps up with you.</h1>
+    <p class="lead">Hand-picked audio, accessories and everyday tech — shipped fast from our serverless warehouse.</p>
+    <a href="#catalog" class="btn btn-primary">Shop the catalog</a>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+    <div class="hero-card">🎧</div>
+  </div>
+</section>
+
+{% if error %}
+  <div class="flash flash-error">{{ error }}</div>
+{% endif %}
+
+<section id="catalog" class="catalog">
+  <div class="catalog-head">
+    <h2>Featured products</h2>
+    <div class="filters" data-filters>
+      <button class="chip chip-active" data-filter="all">All</button>
+      {% for c in categories %}
+        <button class="chip" data-filter="{{ c }}">{{ c }}</button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="product-grid">
+    {% for p in products %}
+      <article class="product-card" data-category="{{ p.category }}">
+        <a class="product-thumb thumb-{{ p.image }}" href="{{ url_for('product_detail', product_id=p.id) }}">
+          <span class="thumb-glyph">{{ p.category[0] }}</span>
+          {% if p.stock is defined and p.stock <= 15 %}
+            <span class="badge badge-low">Only {{ p.stock }} left</span>
+          {% endif %}
+        </a>
+        <div class="product-body">
+          <span class="product-cat">{{ p.category }}</span>
+          <h3><a href="{{ url_for('product_detail', product_id=p.id) }}">{{ p.name }}</a></h3>
+          {% if p.rating is defined %}
+            <div class="rating">★ {{ '%.1f'|format(p.rating) }}</div>
+          {% endif %}
+          <div class="product-foot">
+            <span class="price">£{{ '%.2f'|format(p.price) }}</span>
+            <button class="btn btn-sm btn-primary"
+                    data-add-to-cart
+                    data-id="{{ p.id }}"
+                    data-name="{{ p.name }}"
+                    data-price="{{ p.price }}">Add</button>
+          </div>
+        </div>
+      </article>
+    {% else %}
+      <p class="muted">No products available right now.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

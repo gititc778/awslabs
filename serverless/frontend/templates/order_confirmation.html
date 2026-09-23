@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Order confirmed — {{ store_name }}{% endblock %}
+
+{% block content %}
+<section class="confirm">
+  <div class="confirm-check">✓</div>
+  <h1>Thanks — your order is in!</h1>
+  <p class="lead">We're processing it now. Your order reference is:</p>
+  <div class="order-ref">{{ order_id }}</div>
+  <p class="muted">Order creation is asynchronous — it may show as <strong>PENDING</strong> for a moment while our
+    Order Processor confirms it and files your receipt.</p>
+  <div class="confirm-actions">
+    <a href="{{ url_for('order_status', order_id=order_id) }}" class="btn btn-primary">Track this order</a>
+    <a href="{{ url_for('index') }}" class="btn btn-ghost">Continue shopping</a>
+  </div>
+</section>
+
+{% block scripts %}
+<script>
+  // The order succeeded — empty the local cart.
+  try { localStorage.removeItem("shopwave_cart"); } catch (e) {}
+</script>
+{% endblock %}
+{% endblock %}

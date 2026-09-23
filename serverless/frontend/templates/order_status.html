@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Track order — {{ store_name }}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Track your order</h1>
+
+<form class="lookup" method="get" action="{{ url_for('order_lookup') }}">
+  <input type="text" name="order_id" placeholder="Enter your order reference (e.g. ORD-12345)"
+         value="{{ order_id or '' }}" required />
+  <button class="btn btn-primary" type="submit">Track</button>
+</form>
+
+{% if error %}
+  <div class="flash flash-error">{{ error }}</div>
+{% endif %}
+
+{% if searched and not order and not error %}
+  <div class="empty-state">
+    <div class="empty-glyph">🔎</div>
+    <h2>No order found for “{{ order_id }}”</h2>
+    <p class="muted">Double-check the reference from your confirmation email.</p>
+  </div>
+{% endif %}
+
+{% if order %}
+  {% set status = order.status | default('PENDING') %}
+  {% set steps = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED'] %}
+  {% set current = steps.index(status) if status in steps else 0 %}
+
+  <section class="order-detail">
+    <div class="order-detail-head">
+      <div>
+        <span class="muted small">Order reference</span>
+        <h2>{{ order.order_id or order_id }}</h2>
+      </div>
+      <span class="status-pill status-{{ status|lower }}">{{ status }}</span>
+    </div>
+
+    <div class="tracker">
+      {% for s in steps %}
+        <div class="track-step {{ 'done' if loop.index0 <= current else '' }}">
+          <span class="track-dot">{{ loop.index }}</span>
+          <span class="track-label">{{ s|capitalize }}</span>
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="order-lines">
+      {% for item in order.get('items', []) %}
+        <div class="order-line">
+          <span>{{ item.get('quantity', 1) }} × {{ item.get('name', 'Item') }}</span>
+          <span>£{{ '%.2f'|format(item.get('price', 0) * item.get('quantity', 1)) }}</span>
+        </div>
+      {% endfor %}
+      {% if order.total is defined %}
+        <div class="order-line order-line-total"><span>Total</span><span>£{{ '%.2f'|format(order.total) }}</span></div>
+      {% endif %}
+    </div>
+
+    {% if order.receipt_url %}
+      <p class="muted small">Receipt filed at <code>{{ order.receipt_url }}</code></p>
+    {% endif %}
+  </section>
+{% endif %}
+{% endblock %}
