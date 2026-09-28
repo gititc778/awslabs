@@ -259,7 +259,7 @@ Name:   shopwave-lambda-policy
       "Sid": "ReadDbSecret",
       "Effect": "Allow",
       "Action": "secretsmanager:GetSecretValue",
-      "Resource": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:shopwave/db-XXXXXX"
+      "Resource": "arn:aws:secretsmanager:eu-west-2:150390106962:secret:shopwave/db-XXXXXX"
     },
     {
       "Sid": "SendAndConsumeOrders",
@@ -270,13 +270,13 @@ Name:   shopwave-lambda-policy
         "sqs:DeleteMessage",
         "sqs:GetQueueAttributes"
       ],
-      "Resource": "arn:aws:sqs:<REGION>:<ACCOUNT_ID>:shopwave-orders"
+      "Resource": "arn:aws:sqs:eu-west-2:150390106962:shopwave-orders"
     },
     {
       "Sid": "WriteReceipts",
       "Effect": "Allow",
       "Action": "s3:PutObject",
-      "Resource": "arn:aws:s3:::shopwave-receipts-<ACCOUNT_ID>/*"
+      "Resource": "arn:aws:s3:::shopwave-receipts-150390106962/*"
     }
   ]
 }
