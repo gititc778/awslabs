@@ -386,6 +386,7 @@ Timeout:  15s
 Env:      DB_SECRET_NAME = shopwave/db
 
 upload code to shopwave-products-api
+
 aws lambda update-function-code \
   --function-name shopwave-products-api \
   --zip-file fileb:///home/danish/awslabs/serverless/dist/products-api.zip
@@ -397,6 +398,13 @@ aws lambda update-function-code \
 Zip:      order-status-api.zip
 Timeout:  15s
 Env:      DB_SECRET_NAME = shopwave/db
+
+upload code to shopwave-order-status-api
+
+aws lambda update-function-code \
+   --function-name shopwave-order-status-api \
+  --zip-file fileb:///home/danish/awslabs/serverless/dist/order-status-api.zip
+
 ```
 
 **`shopwave-create-order-api`**  *(no RDS — SQS only)*
@@ -404,6 +412,13 @@ Env:      DB_SECRET_NAME = shopwave/db
 Zip:      create-order-api.zip
 Timeout:  15s
 Env:      ORDER_QUEUE_URL = https://sqs.<REGION>.amazonaws.com/<ACCOUNT_ID>/shopwave-orders
+
+upload code to shopwave-create-order-api
+
+aws lambda update-function-code \
+  --function-name shopwave-create-order-api \
+  --zip-file fileb:///home/danish/awslabs/serverless/dist/create-order-api.zip
+
 ```
 
 **`shopwave-order-processor`**  *(SQS-triggered)*
@@ -412,6 +427,12 @@ Zip:      order-processor.zip
 Timeout:  30s
 Env:      DB_SECRET_NAME = shopwave/db
           RECEIPT_BUCKET = shopwave-receipts-<ACCOUNT_ID>
+
+upload code to shopwave-order-processor
+
+aws lambda update-function-code \
+  --function-name shopwave-order-processor \
+  --zip-file fileb:///home/danish/awslabs/serverless/dist/order-processor.zip
 ```
 
 > Keep timeouts generous — a VPC cold start + Secrets + RDS connect can exceed the 3s
