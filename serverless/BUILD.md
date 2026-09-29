@@ -384,6 +384,12 @@ Code:             upload the matching .zip
 Zip:      products-api.zip
 Timeout:  15s
 Env:      DB_SECRET_NAME = shopwave/db
+
+upload code to shopwave-products-api
+aws lambda update-function-code \
+  --function-name shopwave-products-api \
+  --zip-file fileb:///home/danish/awslabs/serverless/dist/products-api.zip
+
 ```
 
 **`shopwave-order-status-api`**
