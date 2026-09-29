@@ -211,7 +211,7 @@ Secret name:   shopwave/db
 ```
 
 > Record the **secret ARN** — the IAM policy in Step 5 references it, e.g.
-> `arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:shopwave/db-XXXXXX`
+> `arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:shopwave/db-*`
 
 ---
 
