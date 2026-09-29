@@ -431,8 +431,9 @@ aws lambda invoke --function-name shopwave-order-status-api \
 
 # create-order-api  →  202 with an order_id (pushes a message to SQS)
 aws lambda invoke --function-name shopwave-create-order-api \
-  --payload '{"body":"{\"customer\":{\"name\":\"Test\",\"email\":\"t@example.com\"},\"items\":[{\"product_id\":1,\"name\":\"Aurora Wireless Headphones\",\"price\":129.99,\"quantity\":2}],\"idempotency_key\":\"test-1\"}"}' \
+  --payload '{"body":"{\"customer\":{\"name\":\"Test\",\"email\":\"t@example.com\"},\"items\":[{\"product_id\":9,\"name\":\"hp mechanical keyboard\",\"price\":159.99,\"quantity\":2}],\"idempotency_key\":\"test-1\"}"}' \
   --cli-binary-format raw-in-base64-out out.json && cat out.json
+
 
 # order-processor  →  {"batchItemFailures": []}  (writes RDS + S3)
 aws lambda invoke --function-name shopwave-order-processor \
